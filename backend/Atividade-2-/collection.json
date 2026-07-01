@@ -1,0 +1,175 @@
+{
+  "info": {
+    "_postman_id": "1edb067f-6a57-4b8f-8cf5-a4bfa0cb1aa7",
+    "name": "Sistema de Despesas",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "49594405"
+  },
+  "item": [
+    {
+      "name": "http://localhost:3000/users",
+      "request": {
+        "auth": { "type": "noauth" },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nome\": \"Luis\",\r\n  \"email\": \"luis@email.com\",\r\n  \"senha\": \"123456\"\r\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "http://localhost:3000/users",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["users"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/auth/login",
+      "request": {
+        "auth": { "type": "noauth" },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"luis@email.com\",\r\n  \"senha\": \"123456\"\r\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/login",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["auth", "login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/categories",
+      "request": {
+        "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "SEU_TOKEN_AQUI", "type": "string" }] },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"nome\": \"Alimentacao\",\r\n  \"descricao\": \"Gastos com comida\"\r\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "http://localhost:3000/categories",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["categories"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/expenses (POST)",
+      "request": {
+        "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "SEU_TOKEN_AQUI", "type": "string" }] },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"descricao\": \"Mercado\",\r\n  \"valor\": 100,\r\n  \"data\": \"2026-06-01\",\r\n  \"status\": \"PAGA\",\r\n  \"categoriaId\": 1\r\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "http://localhost:3000/expenses",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["expenses"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/expenses (GET)",
+      "request": {
+        "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "SEU_TOKEN_AQUI", "type": "string" }] },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/expenses",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["expenses"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/expenses?status=PAGA",
+      "request": {
+        "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "SEU_TOKEN_AQUI", "type": "string" }] },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/expenses?status=PAGA",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["expenses"],
+          "query": [{ "key": "status", "value": "PAGA" }]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/dashboard/total-expenses",
+      "request": {
+        "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "SEU_TOKEN_AQUI", "type": "string" }] },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/dashboard/total-expenses",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["dashboard", "total-expenses"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/dashboard/expenses-count",
+      "request": {
+        "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "SEU_TOKEN_AQUI", "type": "string" }] },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/dashboard/expenses-count",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["dashboard", "expenses-count"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:3000/dashboard/expenses-by-category",
+      "request": {
+        "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "SEU_TOKEN_AQUI", "type": "string" }] },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/dashboard/expenses-by-category",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["dashboard", "expenses-by-category"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
