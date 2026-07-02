@@ -10,6 +10,10 @@ export default function Categorias() {
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState('');
     const [sucesso, setSucesso] = useState('');
+    const [ordenarPor, setOrdenarPor] = useState(null);
+    const [ordemAsc, setOrdemAsc] = useState(true);
+    const [paginaAtual, setPaginaAtual] = useState(1);
+    const itensPorPagina = 5;
 
     useEffect(() => {
         carregar();
@@ -75,6 +79,40 @@ export default function Categorias() {
         setDescricao('');
     }
 
+    function ordenar(campo) {
+        if (ordenarPor === campo) {
+            setOrdemAsc(!ordemAsc);
+        } else {
+            setOrdenarPor(campo);
+            setOrdemAsc(true);
+        }
+    }
+
+    function categoriasOrdenadas() {
+        if (!ordenarPor) return categorias;
+
+        const copia = [...categorias];
+        copia.sort((a, b) => {
+            const valorA = a[ordenarPor] || '';
+            const valorB = b[ordenarPor] || '';
+
+            if (valorA < valorB) return ordemAsc ? -1 : 1;
+            if (valorA > valorB) return ordemAsc ? 1 : -1;
+            return 0;
+        });
+        return copia;
+    }
+
+    function categoriasPaginadas() {
+        const ordenadas = categoriasOrdenadas();
+        const inicio = (paginaAtual - 1) * itensPorPagina;
+        return ordenadas.slice(inicio, inicio + itensPorPagina);
+    }
+
+    function totalPaginas() {
+        return Math.ceil(categorias.length / itensPorPagina);
+    }
+
     return (
         <div>
             <h1 className="mb-4">Categorias</h1>
@@ -111,29 +149,49 @@ export default function Categorias() {
             {carregando ? (
                 <p>Carregando...</p>
             ) : (
-                <div className="table-responsive">
-                    <table className="table table-striped table-bordered">
-                        <thead className="table-dark">
-                            <tr>
-                                <th>Nome</th>
-                                <th>Descrição</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {categorias.map((categoria) => (
-                                <tr key={categoria.id}>
-                                    <td>{categoria.nome}</td>
-                                    <td>{categoria.descricao}</td>
-                                    <td>
-                                        <button className="btn btn-sm btn-outline-primary me-2" onClick={() => handleEditar(categoria)}>Editar</button>
-                                        <button className="btn btn-sm btn-outline-danger" onClick={() => handleRemover(categoria.id)}>Excluir</button>
-                                    </td>
+                <>
+                    <div className="table-responsive">
+                        <table className="table table-striped table-bordered">
+                            <thead className="table-dark">
+                                <tr>
+                                    <th role="button" onClick={() => ordenar('nome')}>Nome</th>
+                                    <th role="button" onClick={() => ordenar('descricao')}>Descrição</th>
+                                    <th>Ações</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                {categoriasPaginadas().map((categoria) => (
+                                    <tr key={categoria.id}>
+                                        <td>{categoria.nome}</td>
+                                        <td>{categoria.descricao}</td>
+                                        <td>
+                                            <button className="btn btn-sm btn-outline-primary me-2" onClick={() => handleEditar(categoria)}>Editar</button>
+                                            <button className="btn btn-sm btn-outline-danger" onClick={() => handleRemover(categoria.id)}>Excluir</button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div className="d-flex justify-content-center gap-2 mt-3">
+                        <button
+                            className="btn btn-sm btn-outline-secondary"
+                            disabled={paginaAtual === 1}
+                            onClick={() => setPaginaAtual(paginaAtual - 1)}
+                        >
+                            Anterior
+                        </button>
+                        <span className="align-self-center">Página {paginaAtual} de {totalPaginas() || 1}</span>
+                        <button
+                            className="btn btn-sm btn-outline-secondary"
+                            disabled={paginaAtual >= totalPaginas()}
+                            onClick={() => setPaginaAtual(paginaAtual + 1)}
+                        >
+                            Próxima
+                        </button>
+                    </div>
+                </>
             )}
         </div>
     );
